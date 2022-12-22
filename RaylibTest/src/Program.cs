@@ -2,4 +2,11 @@
 
 using RaylibTest;
 
-Main.Run();
+var app = new App();
+
+app
+    .AddPlugin(new DefaultPlugin())
+    .AddPlugin(new RenderPlugin())
+    .AddPlugin(new AnimationPlugin())
+    .AddPlugin(new GamePlugin())
+    .Run();

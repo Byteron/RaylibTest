@@ -1,59 +1,16 @@
-﻿using System.Diagnostics;
-using Raylib_cs;
+﻿using Raylib_cs;
 using RelEcs;
 
 namespace RaylibTest;
 
-public class Main
+public class GamePlugin : IPlugin
 {
-    static readonly World World = new();
-    
-    static readonly SystemGroup InitSystems = new();
-    static readonly SystemGroup UpdateSystems = new();
-    static readonly SystemGroup RenderSystems = new();
-    
-    public static void Run()
+    public void Build(App app)
     {
-        Raylib.InitWindow(800, 480, "RaylibTest");
-        
-        World.AddElement(new Time());
-        World.AddElement(new Textures());
-        
-        UpdateSystems.Add(new SpawnGodotSystem())
-            .Add(new MoveSystem())
-            .Add(new AnimationSystem());
-
-        RenderSystems.Add(new RenderSystem());
-        
-        InitSystems.Run(World);
-        
-        var clock = new Stopwatch();
-        var lastElapsed = 0.0;
-        clock.Start();
-        
-        while (!Raylib.WindowShouldClose())
-        {
-            var elapsed = clock.Elapsed.TotalSeconds;
-            var delta = elapsed - lastElapsed;
-            lastElapsed = elapsed;
-
-            var time = World.GetElement<Time>();
-            time.Delta = (float)delta;
-            
-            UpdateSystems.Run(World);
-            RenderSystems.Run(World);
-            
-            World.Tick();
-            
-        }
-
-        Raylib.CloseWindow();
+        app
+            .AddSystem(Stage.Update, new SpawnGodotSystem())
+            .AddSystem(Stage.Update, new MoveSystem());
     }
-}
-
-public class Time
-{
-    public float Delta;
 }
 
 public class Position
@@ -129,6 +86,3 @@ public class MoveSystem : ISystem
         }
     }
 }
-
-
-

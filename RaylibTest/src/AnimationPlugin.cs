@@ -2,6 +2,14 @@
 
 namespace RaylibTest;
 
+public class AnimationPlugin : IPlugin
+{
+    public void Build(App app)
+    {
+        app.AddSystem(Stage.PostUpdate, new AnimationSystem());
+    }
+}
+
 public class Animation
 {
     public int[] Frames = Array.Empty<int>();

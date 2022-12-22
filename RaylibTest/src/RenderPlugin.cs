@@ -3,6 +3,16 @@ using RelEcs;
 
 namespace RaylibTest;
 
+public class RenderPlugin : IPlugin
+{
+    public void Build(App app)
+    {
+        app
+            .AddElement(new Textures())
+            .AddSystem(Stage.Render, new RenderSystem());
+    }
+}
+
 public class Sprite
 {
     public int Texture;
@@ -14,6 +24,7 @@ public class Textures
     public List<Texture2D> TextureList = new();
 
     const string Prefix = "../../../assets/";
+    
     public int Load(string path)
     {
         if (Indices.TryGetValue(path, out var index)) return index;
