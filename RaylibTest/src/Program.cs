@@ -2,9 +2,7 @@
 
 using RaylibTest;
 
-var app = new App();
-
-app
+new App()
     .AddPlugin(new DefaultPlugin())
     .AddPlugin(new RenderPlugin())
     .AddPlugin(new AnimationPlugin())
