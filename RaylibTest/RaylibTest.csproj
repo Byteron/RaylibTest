@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="HypEcs" Version="1.2.1" />
       <PackageReference Include="Raylib-cs" Version="4.2.0.1" />
       <PackageReference Include="RelEcs" Version="1.5.1" />
     </ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using Raylib_cs;
-using RelEcs;
+using HypEcs;
 
 namespace RaylibTest;
 
-public class Sprite
+public struct Sprite
 {
     public int Texture;
 }
@@ -14,6 +14,7 @@ public class Textures
     public List<Texture2D> TextureList = new();
 
     const string Prefix = "../../../assets/";
+    
     public int Load(string path)
     {
         if (Indices.TryGetValue(path, out var index)) return index;
@@ -39,11 +40,15 @@ public class RenderSystem : ISystem
         Raylib.ClearBackground(Color.WHITE);
         
         var query = world.Query<Sprite, Position>().Build();
-     
-        foreach (var (sprite, pos) in query)
+
+        query.Run((count, sprites, positions) =>
         {
-            Raylib.DrawTexture(textures.TextureList[sprite.Texture], (int)pos.X, (int)pos.Y, Color.WHITE);
-        }
+            for (var i = 0; i < count; i++)
+            {
+                Raylib.DrawTexture(textures.TextureList[sprites[i].Texture], (int)positions[i].X, (int)positions[i].Y,
+                    Color.WHITE);
+            }
+        });   
         
         Raylib.DrawFPS(10, 10);
         Raylib.DrawText($"Entities: {entityCount}", 10, 40, 32, Color.DARKGREEN);
