@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Raylib_cs;
-using RelEcs;
+using HypEcs;
 
 namespace RaylibTest;
 
@@ -14,7 +14,7 @@ public class Main
     
     public static void Run()
     {
-        Raylib.InitWindow(800, 480, "RaylibTest");
+        Raylib.InitWindow(1920, 1080, "RaylibTest");
         
         World.AddElement(new Time());
         World.AddElement(new Textures());
@@ -56,12 +56,12 @@ public class Time
     public float Delta;
 }
 
-public class Position
+public struct Position
 {
     public float X, Y;
 }
 
-public class Velocity
+public struct Velocity
 {
     public float X, Y;
 }
@@ -108,25 +108,32 @@ public class MoveSystem : ISystem
         var width = Raylib.GetRenderWidth();
 
         var delta = world.GetElement<Time>().Delta;
+        var query = world.Query<Position, Velocity>().Build();
         
-        foreach (var (pos, vel) in world.Query<Position, Velocity>().Build())
+        query.Run((count, positions, velocities) =>
         {
-            pos.X += vel.X * delta;
-            pos.Y += vel.Y * delta;
+            for (var i = 0; i < count; i++)
+            {
+                ref var pos = ref positions[i];
+                ref var vel = ref velocities[i];
+                
+                pos.X += vel.X * delta;
+                pos.Y += vel.Y * delta;
 
-            if (pos.X < 0 || pos.X > width)
-            {
-                vel.X = -vel.X;
-            }
+                if (pos.X < 0 || pos.X > width)
+                {
+                    vel.X = -vel.X;
+                }
             
-            if (pos.Y < 0 || pos.Y > height)
-            {
-                vel.Y = -vel.Y;
-            }
+                if (pos.Y < 0 || pos.Y > height)
+                {
+                    vel.Y = -vel.Y;
+                }
             
-            pos.X = Math.Clamp(pos.X, 0, width);
-            pos.Y = Math.Clamp(pos.Y, 0, height);
-        }
+                pos.X = Math.Clamp(pos.X, 0, width);
+                pos.Y = Math.Clamp(pos.Y, 0, height);
+            }
+        });
     }
 }
 
