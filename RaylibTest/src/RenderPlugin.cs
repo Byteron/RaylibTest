@@ -23,13 +23,11 @@ public class Textures
     public Dictionary<string, int> Indices = new();
     public List<Texture2D> TextureList = new();
 
-    const string Prefix = "../../../assets/";
-    
     public int Load(string path)
     {
         if (Indices.TryGetValue(path, out var index)) return index;
 
-        var texture = Raylib.LoadTexture(Prefix + path);
+        var texture = Raylib.LoadTexture(path);
         index = TextureList.Count;
         
         Indices.Add(path, index);

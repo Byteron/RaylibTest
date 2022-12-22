@@ -36,18 +36,18 @@ public class SpawnGodotSystem : ISystem
             for (var i = 0; i < 100; i++)
             {
                 world.Spawn()
-                    .Add(new Sprite { Texture = textures.Load("icon.png") })
+                    .Add(new Sprite { Texture = textures.Load("../../../assets/icon.png") })
                     .Add(new Animation
                     {
                         FrameTime = 0.15f,
                         Frames = new[]
                         {
-                            textures.Load("icon.png"),
-                            textures.Load("icon1.png"),
-                            textures.Load("icon2.png"),
-                            textures.Load("icon3.png"),
-                            textures.Load("icon2.png"),
-                            textures.Load("icon1.png"),
+                            textures.Load("../../../assets/icon.png"),
+                            textures.Load("../../../assets/icon1.png"),
+                            textures.Load("../../../assets/icon2.png"),
+                            textures.Load("../../../assets/icon3.png"),
+                            textures.Load("../../../assets/icon2.png"),
+                            textures.Load("../../../assets/icon1.png"),
                         }
                     })
                     .Add(new Position { X = 50, Y = 50 })
